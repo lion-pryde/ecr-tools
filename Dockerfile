@@ -1,7 +1,7 @@
 # Build image
 FROM golang:1.10.2-alpine AS build-env
 
-ARG NAME=ecr-token
+ARG NAME=ecr-tools
 ARG DESCRIPTION="ECR Docker Token"
 ARG URL="https://pryde.app"
 ARG ORG=lyon-pryde
@@ -14,8 +14,8 @@ RUN go get -u github.com/golang/dep/cmd/dep
 ADD . .
 RUN dep ensure
 
-WORKDIR ${GO_SRC}/cmd/$NAME
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ../bin/$NAME -i .
+WORKDIR ${GO_SRC}/cmd/get-token
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ../bin/get-token -i .
 # Test image
 FROM golang:1.10.2-alpine AS test-env
 WORKDIR /app
