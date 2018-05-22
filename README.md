@@ -9,7 +9,7 @@ export AWS_DEFAULT_REGION=
 > Required claims
 
 ```json
-{
+[
     "ecr:GetAuthorizationToken",
     "ecr:BatchCheckLayerAvailability",
     "ecr:GetDownloadUrlForLayer",
@@ -22,5 +22,5 @@ export AWS_DEFAULT_REGION=
     "ecr:UploadLayerPart",
     "ecr:CompleteLayerUpload",
     "ecr:PutImage"
-}
+]
 ```
