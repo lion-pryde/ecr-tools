@@ -1,6 +1,6 @@
 # ECR Tool
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/lion-pryde/ecr-tools)](https://goreportcard.com/report/github.com/lion-pryde/ecr-tools)
+[![Go Report Card](https://goreportcard.com/badge/github.com/lyon-pryde/ecr-tools)](https://goreportcard.com/report/github.com/lyon-pryde/ecr-tools)
 
 Small container for generating docker token for ECR.
 
