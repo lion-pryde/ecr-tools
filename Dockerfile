@@ -4,7 +4,7 @@ FROM golang:1.10.2-alpine AS build-env
 ARG NAME=ecr-token
 ARG DESCRIPTION="ECR Docker Token"
 ARG URL="https://pryde.app"
-ARG ORG=pryde
+ARG ORG=lyon-pryde
 ARG GO_SRC=/go/src/github.com/$ORG/$NAME
 
 WORKDIR ${GO_SRC}
