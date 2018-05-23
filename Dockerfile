@@ -11,11 +11,13 @@ WORKDIR ${GO_SRC}
 RUN apk add ca-certificates git --update --no-cache
 RUN go get -u github.com/golang/dep/cmd/dep
 
+COPY Gopkg.toml .
+COPY Gopkg.lock .
+RUN dep ensure -vendor-only
 ADD . .
-RUN dep ensure
 
-WORKDIR ${GO_SRC}/cmd/get-token
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ../bin/get-token -i .
+WORKDIR ${GO_SRC}/cmd/$NAME
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ../bin/$NAME -i .
 # Test image
 FROM golang:1.10.2-alpine AS test-env
 WORKDIR /app

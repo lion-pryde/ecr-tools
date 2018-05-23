@@ -4,13 +4,14 @@
 
 Small container for generating docker token for ECR.
 
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_DEFAULT_REGION=
-
-''''sh
+```sh
 docker run pryde/ecr-tools get-token
-'''
+```
+Priority of config.
+
+1) AWS Config file
+2) Environment Variables
+3) binary flags
 
 > Required claims
 
