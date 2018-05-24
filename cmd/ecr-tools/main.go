@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 	switch flag.Arg(0) {
 	case "get-token":
-		getToken(aws.StringValue(flag.Arg(1)))
+		getToken(aws.StringValue(flag.Arg(1))
 	default:
 		fmt.Println("Command not found.")
 		fmt.Println("TODO:... ")
