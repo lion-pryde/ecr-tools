@@ -8,53 +8,114 @@ import (
 
 	"flag"
 	"fmt"
+	"os"
+)
+
+const (
+	awsAccessKeyIDEnvVar = "AWS_ACCESS_KEY_ID"
+	awsAccessKeyEnvVar   = "AWS_ACCESS_KEY"
+
+	awsSecreteAccessKeyEnvVar = "AWS_SECRET_ACCESS_KEY"
+	awsSecreteKeyEnvVar       = "AWS_SECRET_KEY"
+
+	awsECRegistyID = "AWS_ECR_REGISTRY_ID"
+	awsECRegisty   = "AWS_ECR_REGISTRY"
+)
+
+var (
+	registryID    = os.Getenv("AWS_REGISTRY_ID")
+	defaultRegion = os.Getenv("AWS_REGISTRY_ID")
 )
 
 func main() {
 	flag.Parse()
 	switch flag.Arg(0) {
 	case "get-token":
-		getToken(aws.StringValue(flag.Arg(1))
+
+		ec := NewECR()
+		ec.SetRegistyID(registryID)
+		ec.SetDefaultRegion(defaultRegion)
+
+		return
+
 	default:
-		fmt.Println("Command not found.")
-		fmt.Println("TODO:... ")
+		fmt.Println("Command not found: ")
+		fmt.Println(fmt.Sprintf(`Commands:
+			get-token
+		Inputs as ENV Variables:
+		
+		export %s<Value> or export  %s=<Value>
+		
+		export %s=<Value> or export %s=<Value>
+	
+		export %s=<Value> or export %s=<Value>
+		`, awsAccessKeyIDEnvVar, awsAccessKeyEnvVar, awsSecreteAccessKeyEnvVar, awsSecreteKeyEnvVar, awsECRegistyID, awsECRegisty))
 	}
 }
 
-func getToken(registryID string) {
-	cfg, err := external.LoadDefaultAWSConfig()
+// ECR -
+type ECR struct {
+	ecr.ECR
+	registryID    string
+	defaultRegion string
+}
 
-	if err != nil {
-		panic("Unable to load SDK config, " + err.Error())
-	}
+// NewECR -
+func NewECR() *ECR {
+	return &ECR{}
+}
+
+// GetToken - GetToken
+func (cr ECR) GetToken() (token string, erroa error) {
+	cfg, err := external.LoadDefaultAWSConfig()
 
 	svc := ecr.New(cfg)
 
-	input := &ecr.GetAuthorizationTokenInput{
-		RegistryIds: []string{registryID},
+	var input *ecr.GetAuthorizationTokenInput
+
+	if len(cr.registryID) > 0 {
+		input = &ecr.GetAuthorizationTokenInput{
+			RegistryIds: []string{cr.registryID},
+		}
+	} else {
+		input = &ecr.GetAuthorizationTokenInput{
+			RegistryIds: []string{},
+		}
 	}
 
 	result, err := svc.GetAuthorizationTokenRequest(input).Send()
 	if err != nil {
-		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
+		if erroa, ok := err.(awserr.Error); ok {
+			switch erroa.Code() {
 			case ecr.ErrCodeServerException:
-				fmt.Println(ecr.ErrCodeServerException, aerr.Error())
+				fmt.Println(ecr.ErrCodeServerException, erroa.Error())
 			case ecr.ErrCodeInvalidParameterException:
-				fmt.Println(ecr.ErrCodeInvalidParameterException, aerr.Error())
+				fmt.Println(ecr.ErrCodeInvalidParameterException, erroa.Error())
 			default:
-				fmt.Println(aerr.Error())
+				fmt.Println(erroa.Error())
 			}
 		} else {
 			// Print the error, cast err to awserr.Error to get the Code and
 			// Message from an error.
+
+			err = erroa
 			fmt.Println(err.Error())
 		}
-		return
 	}
 
-	for _, token := range result.AuthorizationData {
-		token.ProxyEndpoint()
-		fmt.Println(aws.StringValue(token.AuthorizationToken))
+	if len(result.AuthorizationData) > 0 {
+		token = aws.StringValue(result.AuthorizationData[0].AuthorizationToken)
 	}
+
+	return token, err
+}
+
+// SetRegistyID -
+func (cr ECR) SetRegistyID(registryID string) {
+	cr.registryID = registryID
+}
+
+// SetDefaultRegion -
+func (cr ECR) SetDefaultRegion(defaultRegion string) {
+	cr.defaultRegion = defaultRegion
 }

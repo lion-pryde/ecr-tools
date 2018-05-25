@@ -5,7 +5,7 @@ ARG NAME=ecr-tools
 ARG DESCRIPTION="ECR Docker Token"
 ARG URL="https://pryde.app"
 ARG ORG=lyon-pryde
-ARG GO_SRC=/go/src/github.com/$ORG/$NAME
+ARG GO_SRC=/go/src/github.com/lyon/ecr-tools
 
 WORKDIR ${GO_SRC}
 RUN apk add ca-certificates git --update --no-cache
@@ -16,8 +16,8 @@ COPY Gopkg.lock .
 RUN dep ensure -vendor-only
 ADD . .
 
-WORKDIR ${GO_SRC}/cmd/$NAME
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/$NAME -i .
+WORKDIR ${GO_SRC}/cmd/ecr-tools
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/ecr-tools -i .
 RUN ls /go/bin
 # # Test image
 # FROM golang:1.10.2-alpine AS test-env
