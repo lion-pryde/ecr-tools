@@ -26,7 +26,8 @@ RUN ls /go/bin
 # COPY --from=build-env ${GO_SRC}/bin/${NAME} /app/
 # RUN ls
 # Runtime image
-FROM scratch
+# FROM scratch
+FROM alpine
 # Metadata params
 ARG VERSION
 ARG BUILD_DATE
