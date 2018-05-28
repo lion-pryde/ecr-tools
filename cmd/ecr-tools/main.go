@@ -8,6 +8,7 @@ import (
 
 	"flag"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -38,6 +39,8 @@ func main() {
 
 		token, err := ec.GetToken()
 		if err != nil {
+			log.Fatal(err)
+		} else {
 			fmt.Println(token)
 		}
 	default:
