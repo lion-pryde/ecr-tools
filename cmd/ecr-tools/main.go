@@ -19,7 +19,7 @@ const (
 	awsSecreteKeyEnvVar       = "AWS_SECRET_KEY"
 
 	awsDefaultRegion = "AWS_DEFAULT_REGION"
-	awsECRegistryID   = "AWS_ECR_REGISTRY_ID"
+	awsECRegistryID  = "AWS_ECR_REGISTRY_ID"
 )
 
 var (
@@ -33,7 +33,7 @@ func main() {
 	case "get-token":
 
 		ec := NewECR()
-		ec.SetRegistyID(registryID)
+		ec.SetRegistryID(registryID)
 		ec.SetDefaultRegion(defaultRegion)
 
 		return
