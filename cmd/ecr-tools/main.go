@@ -18,13 +18,13 @@ const (
 	awsSecreteAccessKeyEnvVar = "AWS_SECRET_ACCESS_KEY"
 	awsSecreteKeyEnvVar       = "AWS_SECRET_KEY"
 
-	awsECRegistyID = "AWS_ECR_REGISTRY_ID"
-	awsECRegisty   = "AWS_ECR_REGISTRY"
+	awsDefaultRegion = "AWS_DEFAULT_REGION"
+	awsECRegistyID   = "AWS_ECR_REGISTRY_ID"
 )
 
 var (
-	registryID    = os.Getenv("AWS_REGISTRY_ID")
-	defaultRegion = os.Getenv("AWS_REGISTRY_ID")
+	registryID    = os.Getenv(awsECRegistyID)
+	defaultRegion = os.Getenv(awsDefaultRegion)
 )
 
 func main() {
@@ -46,10 +46,10 @@ func main() {
 		
 		export %s<Value> or export  %s=<Value>
 		
-		export %s=<Value> or export %s=<Value>
+		export %s=<Value>
 	
-		export %s=<Value> or export %s=<Value>
-		`, awsAccessKeyIDEnvVar, awsAccessKeyEnvVar, awsSecreteAccessKeyEnvVar, awsSecreteKeyEnvVar, awsECRegistyID, awsECRegisty))
+		export %s=<Value>
+		`, awsAccessKeyIDEnvVar, awsAccessKeyEnvVar, awsSecreteAccessKeyEnvVar, awsSecreteKeyEnvVar, awsECRegistyID, awsDefaultRegion))
 	}
 }
 
