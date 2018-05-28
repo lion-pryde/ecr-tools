@@ -36,8 +36,10 @@ func main() {
 		ec.SetRegistryID(registryID)
 		ec.SetDefaultRegion(defaultRegion)
 
-		return
-
+		token, err := ec.GetToken()
+		if err != nil {
+			fmt.Println(token)
+		}
 	default:
 		fmt.Println("Command not found: ")
 		fmt.Println(fmt.Sprintf(`Commands:
