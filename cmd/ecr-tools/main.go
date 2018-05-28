@@ -19,11 +19,11 @@ const (
 	awsSecreteKeyEnvVar       = "AWS_SECRET_KEY"
 
 	awsDefaultRegion = "AWS_DEFAULT_REGION"
-	awsECRegistyID   = "AWS_ECR_REGISTRY_ID"
+	awsECRegistryID   = "AWS_ECR_REGISTRY_ID"
 )
 
 var (
-	registryID    = os.Getenv(awsECRegistyID)
+	registryID    = os.Getenv(awsECRegistryID)
 	defaultRegion = os.Getenv(awsDefaultRegion)
 )
 
@@ -46,10 +46,12 @@ func main() {
 		
 		export %s<Value> or export  %s=<Value>
 		
-		export %s=<Value>
+		export %s=<Value> or export  %s=<Value>
 	
 		export %s=<Value>
-		`, awsAccessKeyIDEnvVar, awsAccessKeyEnvVar, awsSecreteAccessKeyEnvVar, awsSecreteKeyEnvVar, awsECRegistyID, awsDefaultRegion))
+
+		export %s=<Value>
+		`, awsAccessKeyIDEnvVar, awsAccessKeyEnvVar, awsSecreteAccessKeyEnvVar, awsSecreteKeyEnvVar, awsECRegistryID, awsDefaultRegion))
 	}
 }
 
@@ -78,9 +80,7 @@ func (cr ECR) GetToken() (token string, erroa error) {
 			RegistryIds: []string{cr.registryID},
 		}
 	} else {
-		input = &ecr.GetAuthorizationTokenInput{
-			RegistryIds: []string{},
-		}
+		input = &ecr.GetAuthorizationTokenInput{}
 	}
 
 	result, err := svc.GetAuthorizationTokenRequest(input).Send()
@@ -110,8 +110,8 @@ func (cr ECR) GetToken() (token string, erroa error) {
 	return token, err
 }
 
-// SetRegistyID -
-func (cr ECR) SetRegistyID(registryID string) {
+// SetRegistryID -
+func (cr ECR) SetRegistryID(registryID string) {
 	cr.registryID = registryID
 }
 
