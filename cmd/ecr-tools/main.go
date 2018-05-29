@@ -6,10 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 
+	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 const (
@@ -110,8 +113,17 @@ func (cr ECR) GetToken() (token string, erroa error) {
 
 	if len(result.AuthorizationData) > 0 {
 		token = aws.StringValue(result.AuthorizationData[0].AuthorizationToken)
+	} else {
+		erroa = errors.New("Invalid Response from AWS")
 	}
-
+	data, erroa := base64.StdEncoding.DecodeString(token)
+	if err != nil {
+		fmt.Println("error:", err)
+		return token, err
+	}
+	split := strings.Split(string(data), ",")
+	// user = split[1]
+	token = split[1]
 	return token, err
 }
 
