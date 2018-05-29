@@ -121,8 +121,8 @@ func (cr ECR) GetToken() (token string, erroa error) {
 		fmt.Println("error:", err)
 		return token, err
 	}
-	split := strings.Split(string(data), ",")
-	// user = split[1]
+	split := strings.Split(string(data), ":")
+	// user = split[0]
 	token = split[1]
 	return token, err
 }
